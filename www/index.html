@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+  <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+  <!--<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />-->
+  <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *;**script-src 'self' http://onlineerp.solution.quebec 'unsafe-inline' 'unsafe-eval';** ">-->
+  <!-- Good default declaration:
+  * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+  * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+  * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+      * Enable inline JS: add 'unsafe-inline' to default-src
+      * Enable eval(): add 'unsafe-eval' to default-src
+  * Create your own at http://cspisawesome.com
+  -->
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700,900i" rel="stylesheet">
+  <!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
+  <link rel="stylesheet" type="text/css" href="css/main.css" />
+  <title>Yumluck</title>
+</head>
+
+<body>
+  <div id = "splash-screen">
+    <div><h1 class = "title">yumluck</h1></div>
+  </div>
+  <nav id = "top-nav">
+    <div class = "title-container">
+      <h1 class = "title">Discover</h1>
+    </div>
+  </nav>
+  <nav id = "bottom-nav">
+    <ul>
+      <li class = "nav-btn">
+        <div>
+          <p>Hello</p>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+</fb:login-button>
+  <section id = "mood-location-container">
+      <div class = "side mood-container">
+        <button>Select a <br><strong>Mood</strong></button>
+      </div>
+      <div class = "side city-container">
+        <button>Searching in <br><span id = "city"></span></button>
+      </div>
+  </section>
+  <section id = "location-container" style = "display: none;">
+    <form>
+      <div>
+        <!--<button class = "search-btn-container">-->
+          <button class = "refresh-location-btn">
+            <img class = "search-icon" src = "./img/refresh-button.png"/>
+          </button>
+        <!--</button>-->
+      </div>
+      <div class = "input-container">
+      <input type = "text" class = "location-title" value = "" placeholder = "Getting your location.."></input>
+      </div>
+      <div class = "search-btn-container">
+        <button class = "search-btn"><img src = "./img/back-arrow-white.png"/></button>
+      </div>
+    </form>
+  </section>
+  
+  <section id = "food-card-container">
+    <div class = "success-card">
+      <h1 class = "success-greeting">Awesome!</h1>
+    </div>
+    <!--<div class = "food-card">
+      <div>
+      <h1 class = "rest-title">Bob's Burgers</h1>
+      <div class = "rest-address-container">
+        <p class = "street-address-1"> 1204 5th St. NW </p>
+        <p class = "street-address-2 hide"></p>
+        <p class = "street-address-3 hide"></p>
+        <p class = "city">Washington DC, <span class = "zip">20001</span</p>
+      </div>
+      <picture>
+        <img class = "rating" src = "./img/small_4@3x.png">
+      </picture>
+      <picture class = "rest-image">
+        <img src = "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg"/>
+      </picture>
+      </div>
+    </div>-->
+      <!--<div class = "food-card">
+      <div>
+      <h1 class = "rest-title">Bob's Burgers</h1>
+      <div class = "rest-address-container">
+        <p class = "street-address-1"> 1204 5th St. NW </p>
+        <p class = "street-address-2 hide"></p>
+        <p class = "street-address-3 hide"></p>
+        <p class = "city">Washington DC, <span class = "zip">20001</span</p>
+      </div>
+      <picture>
+        <img class = "rating" src = "./img/small_4@3x.png">
+      </picture>
+      <picture class = "rest-image">
+        <img src = "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg"/>
+      </picture>
+      </div>
+    </div>-->
+  </section>
+
+  
+  <script type="text/javascript" src="cordova.js"></script>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '1512185375493984',
+        cookie     : true,
+        xfbml      : true,
+        status     : true,
+        version    : 'v2.8'
+      });
+      FB.AppEvents.logPageView();   
+    };
+
+    (function(d, s, id){
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    FB.Event.subscribe('auth.authResponseChange', checkLoginState);
+function checkFB(){
+FB.getLoginStatus(function(response) {
+  if (response.status === 'connected') {
+    alert(response.authResponse.accessToken);
+    console.log(response.authResponse.accessToken);
+  }
+});
+}
+function checkLoginState(event) {
+  checkFB(); 
+  //console.log(event);
+  // if (event.authResponse) {
+  //   // User is signed-in Facebook.
+  //   var unsubscribe = firebase.auth().onAuthStateChanged(function(firebaseUser) {
+  //     unsubscribe();
+  //     // Check if we are already signed-in Firebase with the correct user.
+  //     if (!isUserEqual(event.authResponse, firebaseUser)) {
+  //       // Build Firebase credential with the Facebook auth token.
+  //       var credential = firebase.auth.FacebookAuthProvider.credential(
+  //           event.authResponse.accessToken);
+  //       // Sign in with the credential from the Facebook user.
+  //       firebase.auth().signInWithCredential(credential).catch(function(error) {
+  //         // Handle Errors here.
+  //         var errorCode = error.code;
+  //         var errorMessage = error.message;
+  //         // The email of the user's account used.
+  //         var email = error.email;
+  //         // The firebase.auth.AuthCredential type that was used.
+  //         var credential = error.credential;
+  //         // ...
+  //       });
+  //     } else {
+  //       // User is already signed-in Firebase with the correct user.
+  //     }
+  //   });
+  // } else {
+  //   // User is signed-out of Facebook.
+  //   firebase.auth().signOut();
+  // }
+}
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBYeJbOgsgWAtMtgmXFgzEUxeP6Fukm_9Q",
+      authDomain: "yumluck-1501347226135.firebaseapp.com",
+      databaseURL: "https://yumluck-1501347226135.firebaseio.com",
+      projectId: "yumluck-1501347226135",
+      storageBucket: "",
+      messagingSenderId: "669340209598"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="js/bundled.js"></script>
+</body>
+
+</html>
